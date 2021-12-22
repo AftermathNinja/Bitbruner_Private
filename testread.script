@@ -1,0 +1,3 @@
+serv = read('servers0Port_list.txt');
+var array = serv.split(",")
+alert(array);

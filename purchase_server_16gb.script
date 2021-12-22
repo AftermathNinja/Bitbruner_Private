@@ -1,0 +1,65 @@
+var ram = 16;
+var serversOwned = getPurchasedServers();
+var money = getServerMoneyAvailable('home');
+var servers16GB = [];
+var servers2048GB = [];
+var playerHacklevel = getHackingLevel();
+
+var i = 0;
+var x = servers16GB.length;
+
+//alert(serversOwned + ' ' + serversOwned.length + ' /Debug 1');
+
+while (servers16GB.length !== 25) {
+	print(money);
+	print(getPurchasedServerCost(ram));
+	print(servers16GB);
+	if (money > getPurchasedServerCost(ram) && playerHacklevel > 99) {
+		if (getPurchasedServers().length !== 25) {
+			var serverNew = purchaseServer('pserv-' + x + '-' + ram + 'GB', ram);
+			scp('level_1-2_hack.script', serverNew);
+			exec('level_1-2_hack.script', serverNew, 5);
+			money = getServerMoneyAvailable('home');
+			servers16GB[x] = serverNew;
+			//alert(servers16GB);
+			serversOwned[i] = serverNew;
+			++i;
+		}
+		//var owned8GB = [];
+		//var a = 0;
+		//alert('enough money available /Debug 2');
+		else for (i < serversOwned.length; ++i;) {
+			//alert(serversOwned[i] + ' /Debug 3');
+			serverOld = serversOwned[i];
+			money = getServerMoneyAvailable('home');
+			//alert(serversOwned[i] + ' / ' + serverOld + ' /Debug 3.1');
+			//alert(getServerMaxRam(serverOld) + ' /Debug 3.2');
+			if (getServerMaxRam(serverOld) < ram && money > getPurchasedServerCost(ram)) {
+				killall(serverOld);
+				deleteServer(serverOld);
+				//alert(serverOld + ' has been deleted /Debug 4a');
+				var serverNew = purchaseServer('pserv-' + x + '-' + ram + 'GB', ram);
+				//alert(serverNew + ' has been bought /Debug 5')
+				scp('level_1-2_hack.script', serverNew);
+				exec('level_1-2_hack.script', serverNew, 5);
+				money = getServerMoneyAvailable('home');
+				servers16GB[x] = serverNew;
+				//alert(servers16GB);
+				serversOwned[i] = serverNew;
+			}
+			else {
+				print('Debug 1');
+				sleep(30000);
+				--i;
+			}
+		}
+	}
+	else {
+		print('Debug 2');
+		sleep(30000);
+		money = getServerMoneyAvailable('home');
+		var playerHacklevel = getHackingLevel();
+	}
+}
+
+//exec('purchase_server_128gb.script', 'home');

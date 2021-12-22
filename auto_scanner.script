@@ -1,0 +1,109 @@
+homeServers = scan('home');
+toBeScanned = [];
+isScanned = ['home'];
+completeList = ['home'];
+
+servers0Port = [];
+servers1Port = [];
+servers2Port = [];
+servers3Port = [];
+servers4Port = [];
+servers5Port = [];
+
+alert("Script is running");
+
+//scanning other servers and adding them to the list
+for (var i = 0; i < homeServers.length; ++i) {
+	var serv = homeServers[i];
+	if (isScanned.indexOf(serv) !== -1) {
+		null;
+	}
+	else if (toBeScanned.indexOf(serv) !== -1) {
+		null;
+	}
+	else {
+		indexA = toBeScanned.length;
+		toBeScanned[indexA] = serv;
+		if (completeList.indexOf(serv) !== -1) {
+			null;
+		}
+		else {
+			indexB = completeList.length;
+			completeList[indexB] = serv;
+			//alert(serv + ' has been added to the complete list, debug1');
+		}
+	}
+}
+
+//alert('The following servers are placed in the toBeScanned array: ' + toBeScanned);
+
+for (var x = 0; x < toBeScanned.length; ++x) {
+	var serv = toBeScanned[x];
+	//alert('value serv = ' + serv + ' /debug 1')
+	var temp = isScanned.length;
+	isScanned[temp] = serv;
+	var servScan = scan(serv);
+	//alert('These are placed in servScan variable: ' + servScan + ' /debug 2');
+	//alert('Currently in isScanned list: ' + isScanned + ' /debug 3');
+	for (var y = 0; y < servScan.length; ++y) {
+		if (isScanned.indexOf(servScan[y]) !== -1) {
+			//alert(servScan[y] + ' has already been scanned /debug 4');
+		}
+		else if (toBeScanned.indexOf(servScan[y]) !== -1) {
+			//alert(servScan[y] + ' has already been placed in to be scanned /debug 5');
+		}
+		else {
+			indexA = toBeScanned.length;
+			toBeScanned[indexA] = servScan[y];
+			//alert(toBeScanned[indexA] + ' has been added to toBeScanned list /debug 7')
+			if (completeList.indexOf(servScan[y]) !== -1) {
+				//alert(servScan[y] + ' is already in complete list /debug 8');
+			}
+			else {
+				indexB = completeList.length;
+				completeList[indexB] = servScan[y];
+				//alert(servScan[y] + ' has been added to the complete list, debug 9');
+			}
+		}
+	}
+}
+
+// write('Complete_server_list.txt', completeList, 'w');
+// alert('Writing of list succesfull, look for /complete_server_list.txt');
+// alert(completeList);
+
+//Scan all servers and add them to the correct Ports array
+for (var x = 0; x < completeList.length; ++x) {
+	var serv = completeList[x];
+	if (getServerNumPortsRequired(serv) == 0) {
+		var y = servers0Port.length;
+		servers0Port[y] = serv;
+	}
+	else if (getServerNumPortsRequired(serv) == 1) {
+		var y = servers1Port.length;
+		servers1Port[y] = serv;
+	}
+	else if (getServerNumPortsRequired(serv) == 2) {
+		var y = servers2Port.length;
+		servers2Port[y] = serv;
+	}
+	else if (getServerNumPortsRequired(serv) == 3) {
+		var y = servers3Port.length;
+		servers3Port[y] = serv;
+	}
+	else if (getServerNumPortsRequired(serv) == 4) {
+		var y = servers4Port.length;
+		servers4Port[y] = serv;
+	}
+	else if (getServerNumPortsRequired(serv) == 5) {
+		var y = servers5Port.length;
+		servers5Port[y] = serv;
+	}
+}
+
+write('servers0Port_list.txt', servers0Port, 'w');
+write('servers1Port_list.txt', servers1Port, 'w');
+write('servers2Port_list.txt', servers2Port, 'w');
+write('servers3Port_list.txt', servers3Port, 'w');
+write('servers4Port_list.txt', servers4Port, 'w');
+write('servers5Port_list.txt', servers5Port, 'w');

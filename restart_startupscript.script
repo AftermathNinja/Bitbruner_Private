@@ -1,0 +1,3 @@
+kill('startup.script', 'home');
+sleep(3000);
+exec('startup.script', 'home', 1);

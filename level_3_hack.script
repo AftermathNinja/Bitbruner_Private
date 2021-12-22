@@ -1,0 +1,34 @@
+var target = 'comptek';
+var server = getHostname();
+
+var moneyThresh = getServerMaxMoney(target) * 0.3;
+
+var securityThresh = getServerMinSecurityLevel(target) + 5;
+
+/* if (fileExists('level_1_hack.script', server)) {
+	kill('level_1_hack.script', server);
+}
+
+if (fileExists('level_2_hack.script', server)) {
+	kill('level_2_hack.script', server);
+}
+*/
+
+ftpcrack(target);
+brutessh(target);
+httpworm(target);
+sqlinject(target);
+relaysmtp(target);
+nuke(target);
+
+while (true) {
+	if (getServerSecurityLevel(target) > securityThresh) {
+		weaken(target);
+	}
+	else if (getServerMoneyAvailable(target) < moneyThresh) {
+		grow(target);
+	}
+	else {
+		hack(target);
+	}
+}
